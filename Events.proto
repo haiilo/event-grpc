@@ -1,0 +1,53 @@
+syntax = "proto3";
+package com.coyoapp.trap.grpcmessages;
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "smarpshare/services/webserver/pkg/haiilo-grpc";
+
+message StateRequest {
+    int64 id = 1;
+}
+
+message ErrorResponse {
+    string type = 1;
+    string message = 2;
+}
+
+message StateResponse {
+    google.protobuf.Struct content = 1;
+    string tenantId = 2;
+    ErrorResponse error = 3;
+}
+
+message EventSubscribeRequest {
+    repeated EventTypeSubscribeRequest types = 1;
+    bool includePastEvents = 2;
+}
+
+message EventTypeSubscribeRequest {
+    string typeName = 1;
+    int64 startingId = 2;
+}
+
+message EventRequest {
+    int64 startingId = 1;
+    string entityType = 2;
+}
+
+message EventResponse {
+    int64 id = 1;
+    string eventType = 2;
+    string entityType = 3;
+    string entityId = 4;
+    google.protobuf.Timestamp time = 5; // PersistentEvent creation timestamp (= publicationDate)
+    string tenantId = 6;
+    string eventCategory = 7;
+    string eventOrigin = 8;
+    google.protobuf.Timestamp transmitTime = 9; // time when event was actually transmitted via gRPC
+}
+
+service EventService {
+    rpc getEvents(EventRequest) returns (stream EventResponse) {};
+    rpc subscribeEvents(EventSubscribeRequest) returns (stream EventResponse) {};
+    rpc getEvent(StateRequest) returns (StateResponse) {};
+}
