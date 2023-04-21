@@ -2,7 +2,8 @@ syntax = "proto3";
 package com.coyoapp.trap.grpcmessages;
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
-option go_package = "smarpshare/services/webserver/pkg/haiilo-grpc";
+// go_package reflect the structure of grpc client of Advocacy
+option go_package = "haiilo/event-grpc";
 
 message StateRequest {
     int64 id = 1;

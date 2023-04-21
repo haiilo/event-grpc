@@ -4,7 +4,7 @@
 // - protoc             v4.22.3
 // source: Events.proto
 
-package haiilo_grpc
+package event_grpc
 
 import (
 	context "context"
